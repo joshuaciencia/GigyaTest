@@ -1,36 +1,57 @@
-<!DOCTYPE html>
-<html>
-<!--<head>
-    <title></title>
-    <SCRIPT type="text/javascript" lang="javascript" src="https://cdns.gigya.com/js/gigya.js?apikey=3_mK2cmEzLkzhqe4MUrtPncxbv4wKsYAhsew0iVwhVUls3c_Jx_HLX434jAVpq5M_W"></SCRIPT>
-</head>-->
 <head>
+    <meta name="viewport" content="width=device-width">
     <title></title>
-    <SCRIPT type="text/javascript" lang="javascript" src="https://cdns.gigya.com/js/gigya.js?apikey=3__tPQiJ9jW8keGa_72BST-6-3T84x9Oy056qPPmailtUBKH4LEumorNO33mLukFuz"></SCRIPT>
-</head>
-<!--<head>
-    <title></title>
-    <SCRIPT type="text/javascript" lang="javascript" src="https://cdns.gigya.com/js/gigya.js?apikey=3_NKvQFukA73F2uxpO3lPuC0cV9PpvDEiuWtMK5kgZt13fGBVQAnhL7ODwA5DeG7g3"></SCRIPT>
-</head>-->
+    <SCRIPT type="text/javascript" lang="javascript" src="https://cdns.gigya.com/js/gigya.js?apikey=3_gRpdLbyLjbFd6HeEXoJ-nQudIobjbhWrWkN4OdSL6o6JQUwsYyRjHFRKuUiopn6J"></SCRIPT>
+    <script>
+    
+        function getUserInfo(response) {
+            gigya.socialize.getUserInfo({ callback: getUID });
+        }
+        function getUID(res) {
+            console.log(res);
+            if (res.user != null && res.user.isConnected) {
+                document.getElementById("name").innerHTML = "Bienvenido " + res.user.nickname + "!!! ";
+            }
+        }
+        
+        /*
+        function alCerrar(response){
+            gigya.socialize.getUserInfo(
+                { 
+                    callback: 
+                        function(response){
+                            if (response.status === "OK" && response.user != null && response.user.isConnected) {
+                                gigya.accounts.showScreenSet({screenSet:'POC-RegistrationLogin', startScreen: 'gigya-code-activation-screen'});
+                            }
+                        }
+                }
+            );
+        }
+        */
+        function onLogout(response) {
+            if (response.status === "OK") {
+                document.getElementById("name").innerHTML = "";
+            }else {
+                alert("Error :" + response.errorMessage);
+            }
+        }
+    </script>    
+<script src='/google_analytics_auto.js'></script></head>
+
 
 <body>
-    <div id="runningCodeExample" style="border: 1px solid skyblue; padding: 15px; width: 300px;">
-        <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'Default-RegistrationLogin'});">Login</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'Default-RegistrationLogin'});">Register</a>
-        <br/>
-        <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'Default-ProfileUpdate'});">Edit Your Profile</a>
-      <br/>
-        <a href="#" onclick="gigya.accounts.logout({callback:onLogout});">Logout</a>
-        <script>
-            function onLogout(response) {
-                if (response.errorCode == 0) {
-                    alert('You are now logged out');
-                }
-                else {
-                    alert('Error :' + response.errorMessage);
-                }
-            }
-        </script>
+    <div>
+        <div id="runningCodeExample" style="border: 1px solid skyblue; padding: 15px; width: 300px;">
+            <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'POC-RegistrationLogin', startScreen: 'gigya-register-screen', deviceType: 'auto'});">Registro</a>
+            <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'POC-RegistrationLogin', startScreen: 'gigya-login-screen', onHide:getUserInfo, deviceType: 'auto'});">Inicio</a>
+            
+            <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'Comfama-ProfileUpdate', startScreen: 'gigya-my-account-screen', deviceType: 'auto'});">Mi Cuenta</a>
+            
+            <a href="#" onclick="gigya.accounts.logout({callback:onLogout});">Salir</a>
+            
+            <span id="name" ></span>
+
+
+        </div>
     </div>
 </body>
-</html>
